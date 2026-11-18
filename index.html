@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gio's 1st Birthday! - Undangan Digital</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- Google Fonts: Fredoka (bulat ceria) & Nunito (mudah dibaca) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti untuk efek perayaan -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'fredoka': ['"Fredoka"', 'sans-serif'],
+                        'nunito': ['"Nunito"', 'sans-serif'],
+                    },
+                    colors: {
+                        'nailong-yellow': '#FFD93D',
+                        'nailong-cream': '#FFF8D6',
+                        'nailong-light': '#FFFDF5',
+                        'nailong-orange': '#FF8400',
+                        'nailong-brown': '#5C3D2E',
+                        'nailong-pink': '#FF9EAA',
+                    },
+                    animation: {
+                        'bounce-slow': 'bounceSlow 2.5s infinite ease-in-out',
+                        'float': 'float 4s infinite ease-in-out',
+                        'float-delayed': 'float 5s 1.5s infinite ease-in-out',
+                        'wiggle': 'wiggle 2s infinite ease-in-out',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        bounceSlow: {
+                            '0%, 100%': { transform: 'translateY(0) scale(1, 1)' },
+                            '50%': { transform: 'translateY(-14px) scale(0.97, 1.03)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(3deg)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-4deg)' },
+                            '50%': { transform: 'rotate(4deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #FFF8D6;
+            color: #5C3D2E;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Pola polkadot lembut di latar belakang */
+        .bg-polka {
+            background-color: #FFF8D6;
+            background-image: radial-gradient(#FFD93D 2.5px, transparent 2.5px), radial-gradient(#FF8400 1.5px, #FFF8D6 1.5px);
+            background-size: 44px 44px;
+            background-position: 0 0, 22px 22px;
+        }
+
+        /* Efek tombol 3D menggemaskan */
+        .btn-nailong {
+            box-shadow: 0 5px 0 #D96B00;
+            transition: all 0.15s ease;
+        }
+        .btn-nailong:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #D96B00;
+        }
+
+        .btn-nailong-yellow {
+            box-shadow: 0 5px 0 #E0B200;
+            transition: all 0.15s ease;
+        }
+        .btn-nailong-yellow:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #E0B200;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF8D6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFD93D;
+            border-radius: 9999px;
+            border: 2px solid #FFF8D6;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF8400;
+        }
+
+        /* Kartu ATM BCA Gradient */
+        .bca-card {
+            background: linear-gradient(135deg, #005CAA 0%, #003D73 60%, #00284D 100%);
+        }
+        /* Animasi karakter terbang/melintas dari kiri ke kanan */
+        @keyframes flyAcross {
+            0% { transform: translateX(-120px) translateY(0px) rotate(0deg); }
+            50% { transform: translateX(calc(100vw + 120px)) translateY(-15px) rotate(5deg); }
+            100% { transform: translateX(calc(100vw + 120px)) translateY(0px) rotate(0deg); }
+        }
+
+        .animate-fly {
+            animation: flyAcross 12s linear infinite;
+        }
+
+        /* Animasi mengambang santai untuk elemen fixed */
+        @keyframes floatingFixed {
+            0%, 100% { transform: translateY(0px) rotate(-3deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
+        }
+
+        .animate-floating-corner {
+            animation: floatingFixed 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-polka antialiased selection:bg-nailong-yellow selection:text-nailong-brown">
+
+    <!-- ELEMEN AUDIO LOKAL (Ganti nama file.mp3 sesuai file Anda di folder assets/audio/) -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="assets/audio/musiiik.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- ===================================================================== -->
+    <!-- 1. COVER / SAMPUL UNDANGAN (OPENING OVERLAY)                          -->
+    <!-- ===================================================================== -->
+    <div id="cover-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#FFE66D] via-[#FFF8D6] to-[#FFD93D] p-4 transition-all duration-700 ease-in-out overflow-y-auto">
+        
+        <!-- Dekorasi Awan & Bintang Mengambang -->
+        <div class="pointer-events-none fixed inset-0 overflow-hidden">
+            <!-- Awan Kiri Atas -->
+            <svg class="absolute top-6 left-4 w-24 h-16 text-white/80 animate-float" viewBox="0 0 100 60" fill="currentColor">
+                <path d="M25,50 H75 A15,15 0 0,0 75,20 A20,20 0 0,0 38,15 A15,15 0 0,0 25,50 Z"/>
+            </svg>
+            <!-- Awan Kanan Atas -->
+            <svg class="absolute top-12 right-6 w-28 h-18 text-white/80 animate-float-delayed" viewBox="0 0 100 60" fill="currentColor">
+                <path d="M25,50 H75 A15,15 0 0,0 75,20 A20,20 0 0,0 38,15 A15,15 0 0,0 25,50 Z"/>
+            </svg>
+            <!-- Bintang-bintang -->
+            <div class="absolute top-1/4 left-10 text-2xl animate-pulse">✨</div>
+            <div class="absolute bottom-1/4 right-10 text-2xl animate-pulse">⭐</div>
+            <div class="absolute top-1/3 right-12 text-xl animate-bounce">🎈</div>
+            <div class="absolute bottom-20 left-8 text-xl animate-bounce">🐾</div>
+        </div>
+
+        <!-- Kartu Sampul Utama -->
+        <div class="relative w-full max-w-md bg-white/95 backdrop-blur-sm rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-nailong-yellow text-center my-auto">
+            
+            <!-- Badge Atas -->
+            <div class="inline-block bg-nailong-cream border-2 border-nailong-yellow px-4 py-1 rounded-full text-xs sm:text-sm font-bold text-nailong-orange tracking-wide uppercase mb-3 shadow-sm">
+                🎉 You're Invited! 🎉
+            </div>
+
+            <!-- Ilustrasi SVG Karakter Dino Kuning Chubby (Nailong Style) -->
+            <div class="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto my-2 animate-bounce-slow">
+                <img
+                src="assets/image/cover-depann.webp"
+                alt="Gio Character"
+                class="gio-character"
+                />
+            </div>
+
+            <!-- Judul Sampul -->
+            <h1 class="text-3xl sm:text-4xl font-bold text-nailong-brown tracking-tight leading-tight">
+                Gio's <span class="text-nailong-orange">1st</span> Birthday!
+            </h1>
+            <p class="text-sm sm:text-base text-nailong-brown/80 font-semibold mt-1 mb-5">
+                You're Invited to Celebrate with Nailong &amp; Gio
+            </p>
+
+            <!-- Kotak Nama Tamu Undangan -->
+            <div class="bg-nailong-cream/90 border-2 border-dashed border-nailong-orange rounded-2xl p-3.5 mb-6">
+                <p class="text-xs text-nailong-brown/70 font-bold uppercase tracking-wider mb-1">
+                    Kepada Yth. Bapak/Ibu/Saudara/i:
+                </p>
+                <p id="guest-name-display" class="text-lg sm:text-xl font-display font-bold text-nailong-brown break-words">
+                    Tamu Spesial
+                </p>
+            </div>
+
+            <!-- Tombol Buka Undangan -->
+            <button id="open-invitation-btn" onclick="openInvitation()" class="w-full py-3.5 px-6 bg-nailong-orange hover:bg-[#ff931e] text-white font-display font-bold text-lg rounded-2xl btn-nailong flex items-center justify-center gap-2 cursor-pointer">
+                <span>💌</span>
+                <span>Buka Undangan</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- TOMBOL MUSIK MELAYANG (MUTE / UNMUTE)                                 -->
+    <!-- ===================================================================== -->
+    <button id="music-toggle-btn" onclick="toggleMusic()" aria-label="Putar atau Hentikan Musik" class="fixed bottom-5 right-5 z-40 hidden w-12 h-12 bg-nailong-yellow hover:bg-[#ffe169] text-nailong-brown border-4 border-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 cursor-pointer">
+        <span id="music-icon" class="text-xl animate-spin-slow">🎵</span>
+    </button>
+
+    <!-- ===================================================================== -->
+    <!-- KONTEN UTAMA UNDANGAN (SCROLLABLE)                                    -->
+    <!-- ===================================================================== -->
+    <main id="main-content" class="hidden max-w-xl mx-auto px-4 py-8 sm:py-12 space-y-8 relative">
+
+        <!-- Karakter Webp Terbang Melintas dari Kiri ke Kanan -->
+        <div class="pointer-events-none fixed top-20 left-0 z-30 w-24 h-24 animate-fly">
+            <img src="assets/image/bomblong.webp" alt="Bomblong Terbang" class="w-full h-full object-contain drop-shadow-lg">
+        </div>
+
+        <!-- Dekorasi Jejak Kaki Dino di Latar -->
+        <div class="pointer-events-none fixed inset-0 overflow-hidden z-0 opacity-20">
+            <div class="absolute top-16 left-4 text-4xl rotate-12">🐾</div>
+            <div class="absolute top-1/3 right-4 text-4xl -rotate-12">🐾</div>
+            <div class="absolute bottom-1/4 left-6 text-4xl rotate-45">🐾</div>
+        </div>
+
+        <!-- ----------------------------------------------------------------- -->
+        <!-- SECTION 1: HERO SECTION                                           -->
+        <!-- ----------------------------------------------------------------- -->
+        <section class="relative z-10 bg-white rounded-[2.5rem] p-6 sm:p-8 shadow-xl border-4 border-nailong-yellow text-center overflow-hidden">
+            <!-- Bunting Flag / Bendera Pesta Atas -->
+            <div class="flex justify-center gap-1.5 -mt-6 mb-4">
+                <div class="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[22px] border-t-nailong-orange"></div>
+                <div class="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[22px] border-t-nailong-yellow"></div>
+                <div class="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[22px] border-t-[#4ECDC4]"></div>
+                <div class="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[22px] border-t-nailong-pink"></div>
+                <div class="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[22px] border-t-nailong-orange"></div>
+                <div class="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[22px] border-t-nailong-yellow"></div>
+            </div>
+
+            <span class="inline-block bg-nailong-cream text-nailong-orange font-bold text-xs sm:text-sm px-4 py-1.5 rounded-full border border-nailong-yellow mb-3">
+                🦖 ROAR! I'M TURNING ONE! 🎂
+            </span>
+
+            <!-- Ilustrasi SVG Nailong Memegang Kue Ulang Tahun Angka 1 -->
+            <div class="w-56 h-48 mx-auto my-2 animate-float">
+            <div class="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto my-2 animate-bounce-slow">
+                <img
+                src="assets/image/cover_dalam.webp"
+                alt="Gio Character"
+                class="gio-character"
+                />
+            </div>
+            </div>
+
+            <p class="text-sm font-bold text-nailong-orange uppercase tracking-widest">
+                Celebrating The 1st Birthday of
+            </p>
+            <h1 class="text-3xl sm:text-4xl font-bold text-nailong-brown mt-1 mb-2 leading-tight">
+                Gio Dominic Apriando
+            </h1>
+            <div class="inline-flex items-center gap-2 bg-nailong-yellow/40 px-4 py-1 rounded-full text-sm font-bold text-nailong-brown mb-5">
+                <span>💛</span>
+                <span>"Gio"</span>
+                <span>💛</span>
+            </div>
+
+            <p class="text-sm sm:text-base text-nailong-brown/90 leading-relaxed max-w-md mx-auto">
+                Dengan penuh rasa syukur dan sukacita, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan berbagi kebahagiaan di perayaan ulang tahun pertama putra pertama kami:
+            </p>
+
+            <!-- Nama Orang Tua -->
+            <div class="mt-5 pt-4 border-t-2 border-dashed border-nailong-yellow">
+                <p class="text-xs uppercase tracking-wider text-nailong-brown/70 font-bold">
+                    Putra pertama dari
+                </p>
+                <p class="text-lg sm:text-xl font-display font-bold text-nailong-brown mt-0.5">
+                    Gio's Dad &amp; Mom
+                </p>
+            </div>
+        </section>
+
+        <!-- ----------------------------------------------------------------- -->
+        <!-- SECTION 2: COUNTDOWN TIMER                                        -->
+        <!-- ----------------------------------------------------------------- -->
+        <section class="relative z-10 bg-gradient-to-br from-[#FFD93D] to-[#FFC700] rounded-[2.5rem] p-6 sm:p-7 shadow-xl border-4 border-white text-center">
+            <h2 class="text-xl sm:text-2xl font-bold text-nailong-brown mb-1">
+                ⏳ Menuju Hari Bahagia
+            </h2>
+            <p class="text-xs sm:text-sm font-semibold text-nailong-brown/80 mb-5">
+                Selasa, 24 November 2026 • Pukul 19.00 WIB
+            </p>
+
+            <div class="grid grid-cols-4 gap-2.5 sm:gap-4 max-w-md mx-auto">
+                <div class="bg-white rounded-2xl p-3 shadow-md border-2 border-nailong-orange/30">
+                    <span id="cd-days" class="block text-2xl sm:text-3xl font-display font-bold text-nailong-orange">00</span>
+                    <span class="text-xs font-bold text-nailong-brown/70 uppercase">Hari</span>
+                </div>
+                <div class="bg-white rounded-2xl p-3 shadow-md border-2 border-nailong-orange/30">
+                    <span id="cd-hours" class="block text-2xl sm:text-3xl font-display font-bold text-nailong-orange">00</span>
+                    <span class="text-xs font-bold text-nailong-brown/70 uppercase">Jam</span>
+                </div>
+                <div class="bg-white rounded-2xl p-3 shadow-md border-2 border-nailong-orange/30">
+                    <span id="cd-minutes" class="block text-2xl sm:text-3xl font-display font-bold text-nailong-orange">00</span>
+                    <span class="text-xs font-bold text-nailong-brown/70 uppercase">Menit</span>
+                </div>
+                <div class="bg-white rounded-2xl p-3 shadow-md border-2 border-nailong-orange/30">
+                    <span id="cd-seconds" class="block text-2xl sm:text-3xl font-display font-bold text-nailong-orange">00</span>
+                    <span class="text-xs font-bold text-nailong-brown/70 uppercase">Detik</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ----------------------------------------------------------------- -->
+        <!-- SECTION 3: DETAIL ACARA & LOKASI                                  -->
+        <!-- ----------------------------------------------------------------- -->
+        <section class="relative z-10 bg-white rounded-[2.5rem] p-6 sm:p-8 shadow-xl border-4 border-nailong-yellow text-center">
+            <div class="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto my-2 animate-bounce-slow">
+                <img
+                src="assets/image/petualangan.webp"
+                alt="Gio Character"
+                class="gio-character"
+                />
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-nailong-brown mb-2">
+                Waktu &amp; Tempat Acara
+            </h2>
+            <p class="text-sm text-nailong-brown/80 mb-6">
+                Kehadiran Anda akan menjadi kado terindah bagi Gio!
+            </p>
+
+            <!-- Kartu Info Tanggal & Lokasi -->
+            <div class="bg-nailong-cream/70 rounded-3xl p-5 border-2 border-nailong-yellow space-y-4 text-left">
+                <!-- Hari & Tanggal -->
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-nailong-yellow flex items-center justify-center text-xl shrink-0 shadow-sm">
+                        📅
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-nailong-orange uppercase tracking-wider">Hari &amp; Tanggal</p>
+                        <p class="text-base sm:text-lg font-display font-bold text-nailong-brown">Selasa, 24 November 2026</p>
+                    </div>
+                </div>
+
+                <!-- Waktu -->
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-nailong-yellow flex items-center justify-center text-xl shrink-0 shadow-sm">
+                        ⏰
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-nailong-orange uppercase tracking-wider">Waktu Acara</p>
+                        <p class="text-base sm:text-lg font-display font-bold text-nailong-brown">Pukul 19.00 WIB – Selesai</p>
+                    </div>
+                </div>
+
+                <!-- Lokasi -->
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-nailong-yellow flex items-center justify-center text-xl shrink-0 shadow-sm">
+                        📍
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-nailong-orange uppercase tracking-wider">Lokasi Acara</p>
+                        <p class="text-base sm:text-lg font-display font-bold text-nailong-brown">Hachi Grill – Alam Sutera</p>
+                        <p class="text-xs sm:text-sm text-nailong-brown/75 mt-0.5">
+                            Alam Sutera, Tangerang Selatan (Klik tombol peta di bawah untuk petunjuk arah)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi Lokasi & Kalender -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                <a href="https://maps.app.goo.gl/YxAjcyrdMJyvH86e9?g_st=ac" target="_blank" rel="noopener noreferrer" class="py-3.5 px-5 bg-nailong-orange hover:bg-[#ff931e] text-white font-display font-bold text-base rounded-2xl btn-nailong flex items-center justify-center gap-2">
+                    <span>🗺️</span>
+                    <span>Buka Google Maps</span>
+                </a>
+                <button onclick="downloadICS()" class="py-3.5 px-5 bg-nailong-yellow hover:bg-[#ffe169] text-nailong-brown font-display font-bold text-base rounded-2xl btn-nailong-yellow flex items-center justify-center gap-2 cursor-pointer">
+                    <span>🗓️</span>
+                    <span>Simpan ke Kalender</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ----------------------------------------------------------------- -->
+        <!-- SECTION 4: GALERI MOMEN GIO (INTERAKTIF)                          -->
+        <!-- ----------------------------------------------------------------- -->
+        <section class="relative z-10 bg-white rounded-[2.5rem] p-6 sm:p-8 shadow-xl border-4 border-nailong-yellow text-center">
+            <!-- Ilustrasi SVG Nailong Memegang Kue Ulang Tahun Angka 1 -->
+            <div class="w-56 h-48 mx-auto my-2 animate-float">
+            <div class="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto my-2 animate-bounce-slow">
+                <img
+                src="assets/image/cari-foto.webp"
+                alt="Gio Character"
+                class="gio-character"
+                />
+            </div>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-nailong-brown mb-1">
+                📸 Momen Lucu Gio
+            </h2>
+            <p class="text-xs sm:text-sm text-nailong-brown/80 mb-5">
+                Perjalanan 1 tahun penuh tawa &amp; keajaiban kecil.<br>
+            </p>
+
+            <div class="grid grid-cols-2 gap-3.5 sm:gap-4" id="gallery-grid">
+                <!-- Bingkai 1 -->
+                <div class="group relative aspect-square bg-nailong-cream rounded-3xl border-4 border-nailong-yellow overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all">
+                    <img
+                    src="assets/image/gio-2.webp"
+                    alt="Gio Character"
+                    class="gio-character"
+                    />
+                    <div id="gallery-placeholder-0" class="w-full h-full flex flex-col items-center justify-center p-3 text-center">
+                        <span class="text-4xl sm:text-5xl mb-2 group-hover:scale-110 transition-transform">👶</span>
+                        <span class="text-xs font-display font-bold text-nailong-brown">Newborn Gio</span>
+                        <span class="text-[11px] text-nailong-orange font-semibold mt-0.5">+ Pasang Foto</span>
+                    </div>
+                    <span class="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-xs text-[11px] font-bold text-nailong-brown py-1 px-2 rounded-full truncate">
+                        Hari Pertama Lahir 💛
+                    </span>
+                </div>
+
+                <!-- Bingkai 2 -->
+                <div class="group relative aspect-square bg-nailong-cream rounded-3xl border-4 border-nailong-yellow overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all">
+                    <img
+                    src="assets/image/gio-3.webp"
+                    alt="Gio Character"
+                    class="gio-character"
+                    />
+                    <div id="gallery-placeholder-1" class="w-full h-full flex flex-col items-center justify-center p-3 text-center">
+                        <span class="text-4xl sm:text-5xl mb-2 group-hover:scale-110 transition-transform">🦖</span>
+                        <span class="text-xs font-display font-bold text-nailong-brown">3 Bulan Ceria</span>
+                        <span class="text-[11px] text-nailong-orange font-semibold mt-0.5">+ Pasang Foto</span>
+                    </div>
+                    <span class="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-xs text-[11px] font-bold text-nailong-brown py-1 px-2 rounded-full truncate">
+                        Senyum Manis Gio ✨
+                    </span>
+                </div>
+
+                <!-- Bingkai 3 -->
+                <div class="group relative aspect-square bg-nailong-cream rounded-3xl border-4 border-nailong-yellow overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all">
+                    <img
+                    src="assets/image/gio-4.webp"
+                    alt="Gio Character"
+                    class="gio-character"
+                    />
+                    <div id="gallery-placeholder-2" class="w-full h-full flex flex-col items-center justify-center p-3 text-center">
+                        <span class="text-4xl sm:text-5xl mb-2 group-hover:scale-110 transition-transform">🥣</span>
+                        <span class="text-xs font-display font-bold text-nailong-brown">6 Bulan MPASI</span>
+                        <span class="text-[11px] text-nailong-orange font-semibold mt-0.5">+ Pasang Foto</span>
+                    </div>
+                    <span class="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-xs text-[11px] font-bold text-nailong-brown py-1 px-2 rounded-full truncate">
+                        Makan Lahap! 🍌
+                    </span>
+                </div>
+
+                <!-- Bingkai 4 -->
+                <div class="group relative aspect-square bg-nailong-cream rounded-3xl border-4 border-nailong-yellow overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all">
+                    <img
+                    src="assets/image/gio-1.webp"
+                    alt="Gio Character"
+                    class="gio-character"
+                    />
+                    <div id="gallery-placeholder-3" class="w-full h-full flex flex-col items-center justify-center p-3 text-center">
+                        <span class="text-4xl sm:text-5xl mb-2 group-hover:scale-110 transition-transform">🎂</span>
+                        <span class="text-xs font-display font-bold text-nailong-brown">Menuju 1 Tahun</span>
+                        <span class="text-[11px] text-nailong-orange font-semibold mt-0.5">+ Pasang Foto</span>
+                    </div>
+                    <span class="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-xs text-[11px] font-bold text-nailong-brown py-1 px-2 rounded-full truncate">
+                        Siap Tiup Lilin! 🎉
+                    </span>
+                </div>
+            </div>
+
+            <!-- Input File Tersembunyi untuk Preview Foto Lokal -->
+            <input type="file" id="photo-upload-input" accept="image/*" class="hidden" onchange="handlePhotoSelected(event)">
+        </section>
+
+        <!-- ----------------------------------------------------------------- -->
+        <!-- SECTION 5: BIRTHDAY GIFT / AMPLOP DIGITAL                         -->
+        <!-- ----------------------------------------------------------------- -->
+        <section class="relative z-10 bg-white rounded-[2.5rem] p-6 sm:p-8 shadow-xl border-4 border-nailong-yellow text-center">
+            <div class="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto my-2 animate-bounce-slow">
+                <img
+                src="assets/image/bawa-hadiah.webp"
+                alt="bawa-hadiah"
+                class="bawa-hadiah"
+                />
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-nailong-brown mb-2">
+                Birthday Gift untuk Gio
+            </h2>
+            <p class="text-xs sm:text-sm text-nailong-brown/80 leading-relaxed mb-6 max-w-md mx-auto">
+                Doa restu dan kehadiran Anda sudah merupakan anugerah terindah bagi kami. Namun, jika Bapak/Ibu/Saudara/i ingin memberikan tanda kasih untuk Gio, dapat disalurkan melalui rekening berikut:
+            </p>
+
+            <!-- Kartu ATM BCA -->
+            <div class="bca-card relative max-w-sm mx-auto rounded-3xl p-6 text-white text-left shadow-xl overflow-hidden border-2 border-blue-300/30">
+                <!-- Dekorasi Lingkaran Transparan -->
+                <div class="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10"></div>
+                <div class="absolute -right-4 -bottom-10 w-28 h-28 rounded-full bg-white/5"></div>
+
+                <div class="flex items-center justify-between mb-6">
+                    <span class="font-display font-extrabold text-2xl tracking-wider italic">BCA</span>
+                    <!-- Chip Kartu -->
+                    <div class="w-10 h-7 rounded-md bg-gradient-to-tr from-yellow-400 to-yellow-200 border border-yellow-500/50 flex items-center justify-center">
+                        <div class="w-6 h-4 border border-yellow-600/40 rounded-xs"></div>
+                    </div>
+                </div>
+
+                <p class="text-[11px] uppercase tracking-widest text-blue-200 font-semibold">Nomor Rekening</p>
+                <div class="flex items-center justify-between gap-2 my-1">
+                    <p id="rek-number" class="text-xl sm:text-2xl font-mono font-bold tracking-wider">7131041083</p>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-white/15 flex items-center justify-between">
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest text-blue-200">Atas Nama</p>
+                        <p class="text-sm sm:text-base font-display font-bold tracking-wide">Friska Heriyanti</p>
+                    </div>
+                    <span class="text-2xl">🦖</span>
+                </div>
+            </div>
+
+            <!-- Tombol Salin Rekening -->
+            <button onclick="copyAccountNumber()" class="mt-5 py-3 px-6 bg-nailong-yellow hover:bg-[#ffe169] text-nailong-brown font-display font-bold text-sm sm:text-base rounded-2xl btn-nailong-yellow inline-flex items-center gap-2 cursor-pointer">
+                <span>📋</span>
+                <span>Salin Nomor Rekening</span>
+            </button>
+        </section>
+
+        <!-- ----------------------------------------------------------------- -->
+        <!-- SECTION 6: RSVP & UCAPAN DOA                                      -->
+        <!-- ----------------------------------------------------------------- -->
+        <section class="relative z-10 bg-white rounded-[2.5rem] p-6 sm:p-8 shadow-xl border-4 border-nailong-yellow">
+            <div class="text-center mb-6">
+                <div class="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto my-2 animate-bounce-slow">
+                    <img
+                    src="assets/image/rsvp-nailoong.webp"
+                    alt="Gio rsvp"
+                    class="gio-rsvp"
+                    />
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-nailong-brown mb-1">
+                    RSVP &amp; Ucapan Doa
+                </h2>
+                <p class="text-xs sm:text-sm text-nailong-brown/80">
+                    Konfirmasi kehadiran Anda &amp; tuliskan doa manis untuk ulang tahun pertama Gio!
+                </p>
+            </div>
+
+            <!-- Form RSVP -->
+            <form id="rsvp-form" onsubmit="submitRSVP(event)" class="space-y-4">
+                <div>
+                    <label for="rsvp-name" class="block text-xs font-bold text-nailong-brown uppercase tracking-wider mb-1.5">
+                        Nama Tamu *
+                    </label>
+                    <input type="text" id="rsvp-name" required placeholder="Contoh: Om Budi & Keluarga" class="w-full px-4 py-3 rounded-2xl bg-nailong-cream/60 border-2 border-nailong-yellow focus:border-nailong-orange focus:bg-white focus:outline-none text-nailong-brown font-semibold transition-colors">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label for="rsvp-status" class="block text-xs font-bold text-nailong-brown uppercase tracking-wider mb-1.5">
+                            Konfirmasi Kehadiran *
+                        </label>
+                        <select id="rsvp-status" onchange="toggleGuestCount()" class="w-full px-4 py-3 rounded-2xl bg-nailong-cream/60 border-2 border-nailong-yellow focus:border-nailong-orange focus:bg-white focus:outline-none text-nailong-brown font-semibold transition-colors">
+                            <option value="Hadir">🎉 Ya, Saya Akan Hadir</option>
+                            <option value="Tidak Hadir">🙏 Maaf, Belum Bisa Hadir</option>
+                        </select>
+                    </div>
+
+                    <div id="guest-count-wrapper">
+                        <label for="rsvp-guests" class="block text-xs font-bold text-nailong-brown uppercase tracking-wider mb-1.5">
+                            Jumlah Tamu
+                        </label>
+                        <select id="rsvp-guests" class="w-full px-4 py-3 rounded-2xl bg-nailong-cream/60 border-2 border-nailong-yellow focus:border-nailong-orange focus:bg-white focus:outline-none text-nailong-brown font-semibold transition-colors">
+                            <option value="1 Orang">1 Orang</option>
+                            <option value="2 Orang" selected>2 Orang</option>
+                            <option value="3 Orang">3 Orang</option>
+                            <option value="4 Orang">4 Orang</option>
+                            <option value="5+ Orang">5+ Orang (Keluarga)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="rsvp-message" class="block text-xs font-bold text-nailong-brown uppercase tracking-wider mb-1.5">
+                        Ucapan &amp; Doa untuk Gio *
+                    </label>
+                    <textarea id="rsvp-message" rows="3" required placeholder="Selamat ulang tahun ke-1 Gio! Semoga tumbuh sehat, pintar, dan selalu jadi kebanggaan Papa Lukas & Mama Friska..." class="w-full px-4 py-3 rounded-2xl bg-nailong-cream/60 border-2 border-nailong-yellow focus:border-nailong-orange focus:bg-white focus:outline-none text-nailong-brown font-semibold transition-colors resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 px-6 bg-nailong-orange hover:bg-[#ff931e] text-white font-display font-bold text-base sm:text-lg rounded-2xl btn-nailong flex items-center justify-center gap-2 cursor-pointer">
+                    <span>🚀</span>
+                    <span>Kirim Konfirmasi &amp; Ucapan</span>
+                </button>
+            </form>
+
+            <!-- Daftar Ucapan Masuk -->
+            <div class="mt-8 pt-6 border-t-2 border-dashed border-nailong-yellow">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-display font-bold text-lg text-nailong-brown">
+                        Ucapan &amp; Doa (<span id="wishes-count">3</span>)
+                    </h3>
+                    <span class="text-xs font-bold bg-nailong-cream text-nailong-orange px-3 py-1 rounded-full">
+                        Terbaru
+                    </span>
+                </div>
+
+                <div id="wishes-list" class="space-y-3 max-h-96 overflow-y-auto pr-1">
+                    <!-- Ucapan bawaan agar terlihat hidup sejak awal -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ----------------------------------------------------------------- -->
+        <!-- SECTION 7: FOOTER & PEMBUAT LINK TAMU (UNTUK ORANG TUA)           -->
+        <!-- ----------------------------------------------------------------- -->
+        <footer class="relative z-10 text-center space-y-6 pb-8">
+            <div class="bg-white/90 rounded-[2rem] p-6 border-4 border-nailong-yellow shadow-md text-center">
+            <!-- 3 Gambar Webp Pengganti Emoji -->
+                <div class="flex justify-center items-center gap-3 mb-3 animate-bounce-slow">
+                    <img src="assets/image/nailoong.webp" alt="Nailong" class="w-12 h-12 object-cover rounded-full border-2 border-nailong-yellow shadow-sm">
+                    <img src="assets/image/gio.webp" alt="Gio" class="w-12 h-12 object-cover rounded-full border-2 border-nailong-yellow shadow-sm">
+                    <img src="assets/image/xiaoqi.webp" alt="Xiao Qi" class="w-12 h-12 object-cover rounded-full border-2 border-nailong-yellow shadow-sm">
+                </div>
+    
+                    <p class="text-sm text-nailong-brown/85 leading-relaxed">
+                        Terima kasih atas perhatian, doa, dan kehadiran Bapak/Ibu/Saudara/i di hari spesial pertama putra kami.
+                    </p>
+                    <p class="font-display font-bold text-lg text-nailong-brown mt-3">
+                         Salam hangat,<br>
+                    <span class="text-nailong-orange">Lukas, Friska &amp; Baby Gio</span>
+                    </p>
+            </div>
+
+            <!-- Alat Bantu Buat Link Undangan Khusus Nama Tamu -->
+            <div class="bg-nailong-cream/90 rounded-3xl p-5 border-2 border-dashed border-nailong-orange/50 text-left">
+                <button onclick="toggleLinkGenerator()" class="w-full flex items-center justify-between text-xs font-bold text-nailong-brown uppercase tracking-wider cursor-pointer">
+                    <span>🔗 Buat Link Khusus Nama Tamu (Untuk Orang Tua)</span>
+                    <span id="link-gen-arrow">▼</span>
+                </button>
+                <div id="link-generator-box" class="hidden mt-3 pt-3 border-t border-nailong-yellow space-y-2.5">
+                    <p class="text-xs text-nailong-brown/75">
+                        Ketik nama tamu untuk membuat link undangan otomatis yang menampilkan nama mereka di sampul depan:
+                    </p>
+                    <div class="flex gap-2">
+                        <input type="text" id="custom-guest-input" placeholder="Misal: Keluarga Om Budi" class="flex-1 px-3 py-2 text-sm rounded-xl bg-white border-2 border-nailong-yellow focus:outline-none focus:border-nailong-orange">
+                        <button onclick="generateGuestLink()" class="px-4 py-2 bg-nailong-orange text-white font-display font-bold text-xs rounded-xl hover:bg-[#ff931e] cursor-pointer shrink-0">
+                            Salin Link
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xs text-nailong-brown/60 font-semibold">
+                Gio's 1st Birthday • by irfanbikin.in 🦖✨
+            </p>
+        </footer>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- TOAST NOTIFICATION (PENGGANTI ALERT)                                  -->
+    <!-- ===================================================================== -->
+    <div id="toast-notification" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 translate-y-4">
+        <div class="bg-nailong-brown text-white px-5 py-3 rounded-full shadow-2xl border-2 border-nailong-yellow flex items-center gap-2.5 text-sm font-bold whitespace-nowrap">
+            <span id="toast-icon">✅</span>
+            <span id="toast-message">Pesan notifikasi</span>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT LOGIC                                                      -->
+    <!-- ===================================================================== -->
+    <script>
+        // -------------------------------------------------------------------
+        // 1. INISIALISASI NAMA TAMU DARI URL (?to=Nama+Tamu)
+        // -------------------------------------------------------------------
+        function getGuestNameFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('to');
+            if (guestName && guestName.trim() !== '') {
+                return guestName.trim();
+            }
+            return 'Tamu Spesial';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const guestName = getGuestNameFromURL();
+            document.getElementById('guest-name-display').textContent = guestName;
+            
+            // Isi otomatis nama di form RSVP jika bukan default
+            if (guestName !== 'Tamu Spesial') {
+                document.getElementById('rsvp-name').value = guestName;
+            }
+
+            // Mulai hitung mundur & muat ucapan
+            startCountdown();
+            renderInitialWishes();
+        });
+
+        // -------------------------------------------------------------------
+        // 2. BUKA UNDANGAN & KONFETI
+        // -------------------------------------------------------------------
+        function openInvitation() {
+            const cover = document.getElementById('cover-screen');
+            const main = document.getElementById('main-content');
+            const musicBtn = document.getElementById('music-toggle-btn');
+
+            // Animasi geser ke atas & pudar
+            cover.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            
+            // Tampilkan konten utama
+            main.classList.remove('hidden');
+            musicBtn.classList.remove('hidden');
+
+            // Jalankan konfeti ceria
+            fireConfetti();
+
+            // Mulai musik latar ceria
+            startHappyMusic();
+
+            // Hapus cover dari DOM setelah transisi selesai agar ringan
+            setTimeout(() => {
+                cover.style.display = 'none';
+            }, 750);
+        }
+
+        function fireConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#FFD93D', '#FF8400', '#FF9EAA', '#4ECDC4', '#FFFFFF']
+                });
+            }
+        }
+
+// ===================================================================
+        // PENGELOLA AUDIO LOKAL (assets/audio/...)
+        // ===================================================================
+        const bgMusic = document.getElementById('bg-music');
+        let isPlayingMusic = false;
+
+        function openInvitation() {
+            document.getElementById('cover-screen').classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            document.getElementById('main-content').classList.remove('hidden');
+            document.getElementById('music-toggle-btn').classList.remove('hidden');
+            if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            
+            // Putar musik otomatis saat undangan dibuka
+            bgMusic.play().then(() => {
+                isPlayingMusic = true;
+                updateMusicButtonUI();
+            }).catch(e => {
+                console.log("Autoplay dicegah browser, silakan klik tombol musik manual:", e);
+            });
+        }
+
+        function toggleMusic() {
+            if (isPlayingMusic) {
+                bgMusic.pause();
+                isPlayingMusic = false;
+            } else {
+                bgMusic.play();
+                isPlayingMusic = true;
+            }
+            updateMusicButtonUI();
+        }
+
+        function updateMusicButtonUI() {
+            const svgIcon = document.getElementById('music-icon-svg');
+            if (isPlayingMusic) {
+                svgIcon.classList.add('animate-spin-slow');
+                svgIcon.style.opacity = '1';
+            } else {
+                svgIcon.classList.remove('animate-spin-slow');
+                svgIcon.style.opacity = '0.5';
+            }
+        }
+
+        // -------------------------------------------------------------------
+        // 4. COUNTDOWN TIMER KE SELASA, 24 NOVEMBER 2026 PUKUL 19:00 WIB
+        // -------------------------------------------------------------------
+        function startCountdown() {
+            // 24 November 2026, 19:00:00 WIB (UTC+7)
+            const targetDate = new Date('2026-11-24T19:00:00+07:00').getTime();
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance <= 0) {
+                    document.getElementById('cd-days').textContent = '00';
+                    document.getElementById('cd-hours').textContent = '00';
+                    document.getElementById('cd-minutes').textContent = '00';
+                    document.getElementById('cd-seconds').textContent = '00';
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // -------------------------------------------------------------------
+        // 5. SIMPAN KE KALENDER (.ICS DOWNLOAD)
+        // -------------------------------------------------------------------
+        function downloadICS() {
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Gio 1st Birthday//Undangan Digital//ID',
+                'BEGIN:VEVENT',
+                'SUMMARY:Ulang Tahun ke-1 Gio Dominic Apriando 🎂🦖',
+                'DTSTART:20261124T120000Z', // 19:00 WIB = 12:00 UTC
+                'DTEND:20261124T150000Z',   // 22:00 WIB = 15:00 UTC
+                'LOCATION:Hachi Grill - Alam Sutera (https://maps.app.goo.gl/YxAjcyrdMJyvH86e9?g_st=ac)',
+                'DESCRIPTION:Perayaan Ulang Tahun Pertama Gio Dominic Apriando (Putra dari Bapak Lukas & Ibu Friska).',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Ultah-1-Gio-Dominic.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('📅', 'File kalender berhasil diunduh!');
+        }
+
+        // -------------------------------------------------------------------
+        // 6. GALERI INTERAKTIF (UPLOAD PREVIEW FOTO LOKAL)
+        // -------------------------------------------------------------------
+        let activeSlotIndex = 0;
+
+        function triggerPhotoUpload(slotIndex) {
+            activeSlotIndex = slotIndex;
+            document.getElementById('photo-upload-input').click();
+        }
+
+        function handlePhotoSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgEl = document.getElementById(`gallery-img-${activeSlotIndex}`);
+                const placeholderEl = document.getElementById(`gallery-placeholder-${activeSlotIndex}`);
+
+                imgEl.src = e.target.result;
+                imgEl.classList.remove('hidden');
+                placeholderEl.classList.add('hidden');
+
+                showToast('📸', 'Foto berhasil dipasang di bingkai!');
+            };
+            reader.readAsDataURL(file);
+            event.target.value = ''; // reset input
+        }
+
+        // -------------------------------------------------------------------
+        // 7. SALIN NOMOR REKENING BCA
+        // -------------------------------------------------------------------
+        function copyAccountNumber() {
+            const rekNumber = document.getElementById('rek-number').textContent.trim();
+
+            // Menggunakan metode kompatibel iframe (execCommand)
+            const tempInput = document.createElement('input');
+            tempInput.value = rekNumber;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999);
+
+            try {
+                document.execCommand('copy');
+                showToast('✅', 'Nomor rekening berhasil disalin!');
+            } catch (err) {
+                showToast('ℹ️', 'No. Rek BCA: ' + rekNumber);
+            }
+
+            document.body.removeChild(tempInput);
+        }
+
+        // -------------------------------------------------------------------
+        // 8. RSVP & UCAPAN DOA INTERAKTIF (DENGAN LOCALSTORAGE)
+        // -------------------------------------------------------------------
+        
+
+        function getStoredWishes() {
+            try {
+                const saved = localStorage.getItem('gio_1st_bday_wishes');
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+            } catch (e) {
+                console.warn('LocalStorage tidak tersedia:', e);
+            }
+            return defaultWishes;
+        }
+
+        function saveWishes(wishes) {
+            try {
+                localStorage.setItem('gio_1st_bday_wishes', JSON.stringify(wishes));
+            } catch (e) {
+                console.warn('Gagal menyimpan ucapan ke LocalStorage:', e);
+            }
+        }
+
+        function toggleGuestCount() {
+            const status = document.getElementById('rsvp-status').value;
+            const wrapper = document.getElementById('guest-count-wrapper');
+            if (status === 'Tidak Hadir') {
+                wrapper.classList.add('opacity-40', 'pointer-events-none');
+            } else {
+                wrapper.classList.remove('opacity-40', 'pointer-events-none');
+            }
+        }
+
+        function submitRSVP(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('rsvp-name').value.trim();
+            const status = document.getElementById('rsvp-status').value;
+            const guests = status === 'Hadir' ? document.getElementById('rsvp-guests').value : '-';
+            const message = document.getElementById('rsvp-message').value.trim();
+
+            if (!name || !message) return;
+
+            const avatars = ['🦖', '🎈', '🎂', '⭐', '💛', '🥳'];
+            const randomAvatar = avatars[Math.floor(Math.random() * avatars.length)];
+
+            const newWish = {
+                name,
+                status,
+                guests,
+                message,
+                avatar: randomAvatar
+            };
+
+            const wishes = getStoredWishes();
+            wishes.unshift(newWish);
+            saveWishes(wishes);
+
+            renderWishesList(wishes);
+
+            // Reset textarea ucapan saja
+            document.getElementById('rsvp-message').value = '';
+
+            // Efek konfeti & notifikasi
+            fireConfetti();
+            showToast('🎉', 'Terima kasih! Konfirmasi & ucapan terkirim.');
+        }
+
+        function renderInitialWishes() {
+            const wishes = getStoredWishes();
+            renderWishesList(wishes);
+        }
+
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function renderWishesList(wishes) {
+            const container = document.getElementById('wishes-list');
+            const countEl = document.getElementById('wishes-count');
+            countEl.textContent = wishes.length;
+
+            container.innerHTML = wishes.map(item => {
+                const isHadir = item.status === 'Hadir';
+                const badgeClass = isHadir
+                    ? 'bg-green-100 text-green-700 border-green-200'
+                    : 'bg-orange-100 text-orange-700 border-orange-200';
+                const badgeText = isHadir
+                    ? `✓ Hadir (${escapeHTML(item.guests)})`
+                    : '🙏 Berhalangan Hadir';
+
+                return `
+                    <div class="bg-nailong-cream/60 rounded-2xl p-4 border-2 border-nailong-yellow/70">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-nailong-yellow flex items-center justify-center text-xl shrink-0 shadow-xs">
+                                ${item.avatar || '🦖'}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex flex-wrap items-center justify-between gap-1.5 mb-1">
+                                    <h4 class="font-display font-bold text-sm text-nailong-brown truncate">
+                                        ${escapeHTML(item.name)}
+                                    </h4>
+                                    <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${badgeClass}">
+                                        ${badgeText}
+                                    </span>
+                                </div>
+                                <p class="text-xs sm:text-sm text-nailong-brown/90 leading-relaxed break-words">
+                                    "${escapeHTML(item.message)}"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // -------------------------------------------------------------------
+        // 9. PEMBUAT LINK KHUSUS NAMA TAMU (SHARE LINK GENERATOR)
+        // -------------------------------------------------------------------
+        function toggleLinkGenerator() {
+            const box = document.getElementById('link-generator-box');
+            const arrow = document.getElementById('link-gen-arrow');
+            box.classList.toggle('hidden');
+            arrow.textContent = box.classList.contains('hidden') ? '▼' : '▲';
+        }
+
+        function generateGuestLink() {
+            const input = document.getElementById('custom-guest-input').value.trim();
+            if (!input) {
+                showToast('⚠️', 'Masukkan nama tamu terlebih dahulu');
+                return;
+            }
+
+            const baseUrl = window.location.href.split('?')[0];
+            const customUrl = `${baseUrl}?to=${encodeURIComponent(input)}`;
+
+            const tempInput = document.createElement('input');
+            tempInput.value = customUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999);
+
+            try {
+                document.execCommand('copy');
+                showToast('🔗', `Link untuk "${input}" disalin!`);
+            } catch (err) {
+                showToast('ℹ️', customUrl);
+            }
+
+            document.body.removeChild(tempInput);
+        }
+
+        // -------------------------------------------------------------------
+        // 10. TOAST NOTIFICATION HELPER
+        // -------------------------------------------------------------------
+        let toastTimeout = null;
+
+        function showToast(icon, message) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-icon').textContent = icon;
+            document.getElementById('toast-message').textContent = message;
+
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-4');
+            }, 3000);
+        }
+    </script>
+
+    <!-- Library Supabase Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Library Supabase Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // Konfigurasi Supabase Anda
+  const SUPABASE_URL = 'https://reqwfdyshmxtbbxulnku.supabase.co'; 
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlcXdmZHlzaG14dGJieHVsbmt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ5NTc2MTcsImV4cCI6MjExMDUzMzYxN30.OE6UG7b0dkxgklwgm9xokbtFhmbzravp9jrCynne3_A'; // Masukkan publishable key Supabase Anda
+
+  const { createClient } = supabase;
+  const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // 1. Fungsi Kirim RSVP & Ucapan (Menyesuaikan dengan id form Anda)
+  window.submitRSVP = async function(event) {
+      event.preventDefault();
+      
+      const nameInput = document.getElementById('rsvp-name').value;
+      const statusSelect = document.getElementById('rsvp-status').value;
+      const guestsSelect = document.getElementById('rsvp-guests').value;
+      const messageInput = document.getElementById('rsvp-message').value;
+
+      // Menggabungkan status kehadiran dan jumlah tamu agar informatif
+      const fullStatus = statusSelect === 'Hadir' ? `Hadir (${guestsSelect})` : 'Tidak Hadir';
+
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span>⏳</span><span>Mengirim...</span>';
+      submitBtn.disabled = true;
+
+      // Mengirim data ke tabel Supabase 
+      // (Catatan: Jika nama tabel Anda di Supabase adalah 'ucapan_gio', ubah '.from(\'id\')' menjadi '.from(\'ucapan_gio\')')
+      const { data, error } = await _supabase
+          .from('id') 
+          .insert([
+              { 
+                  name: nameInput, 
+                  status: fullStatus, 
+                  message: messageInput 
+              }
+          ]);
+
+      if (error) {
+          alert("Gagal mengirim ucapan: " + error.message);
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+      } else {
+          alert("Terima kasih! Ucapan & konfirmasi kehadiran berhasil dikirim.");
+          document.getElementById('rsvp-form').reset();
+          loadWishes(); // Refresh daftar komentar otomatis
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+      }
+  };
+
+  // 2. Fungsi Menampilkan Daftar Ucapan dari Database Supabase secara Real-time
+  async function loadWishes() {
+      const wishesListContainer = document.getElementById('wishes-list');
+      const wishesCountBadge = document.getElementById('wishes-count');
+      if (!wishesListContainer) return;
+
+      // Mengambil data dari tabel Supabase diurutkan dari yang terbaru
+      const { data, error } = await _supabase
+          .from('id') // Sesuaikan dengan nama tabel Anda ('id' atau 'ucapan_gio')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+      if (error) {
+          console.error("Gagal memuat ucapan:", error);
+          return;
+      }
+
+      // Perbarui angka total ucapan di header
+      if (wishesCountBadge) {
+          wishesCountBadge.innerText = data ? data.length : 0;
+      }
+
+      wishesListContainer.innerHTML = '';
+      
+      if (!data || data.length === 0) {
+          wishesListContainer.innerHTML = '<p class="text-xs text-center text-nailong-brown/60 py-4">Belum ada ucapan. Jadilah yang pertama memberikan doa!</p>';
+          return;
+      }
+
+      data.forEach(item => {
+          const isHadir = item.status && item.status.includes('Hadir');
+          const badgeClass = isHadir 
+              ? 'bg-green-100 text-green-700 border border-green-200' 
+              : 'bg-red-100 text-red-700 border border-red-200';
+
+          const htmlItem = `
+              <div class="bg-nailong-cream/40 p-4 rounded-2xl border-2 border-nailong-yellow text-left shadow-sm mb-3">
+                  <div class="flex justify-between items-center mb-1.5">
+                      <span class="font-bold text-sm text-nailong-brown">${escapeHtml(item.name || 'Tamu')}</span>
+                      <span class="text-[11px] px-2.5 py-0.5 rounded-full font-semibold ${badgeClass}">
+                          ✓ ${escapeHtml(item.status || 'Hadir')}
+                      </span>
+                  </div>
+                  <p class="text-xs sm:text-sm text-nailong-brown/90 leading-relaxed mb-2">${escapeHtml(item.message || '')}</p>
+                  <span class="text-[10px] text-nailong-brown/50 block">
+                      ${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'}) : 'Baru saja'}
+                  </span>
+              </div>
+          `;
+          wishesListContainer.innerHTML += htmlItem;
+      });
+  }
+
+  // Fungsi pengaman karakter HTML agar aman dari script berbahaya
+  function escapeHtml(str) {
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // Otomatis muat daftar ucapan saat halaman web pertama kali dibuka
+  document.addEventListener("DOMContentLoaded", loadWishes);
+</script>
+</body>
+<!-- Library Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // Konfigurasi Supabase Anda
+  const SUPABASE_URL = 'https://reqwfdyshmxtbbxulnku.supabase.co'; 
+  const SUPABASE_ANON_KEY = 'sb_publishable_q1rIFsb_jLV6Kc0VdmEzdA_X8DA2ZCzeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlcXdmZHlzaG14dGJieHVsbmt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ5NTc2MTcsImV4cCI6MjExMDUzMzYxN30.OE6UG7b0dkxgklwgm9xokbtFhmbzravp9jrCynne3_A'; // Ganti/pastikan sesuai key Anda jika ada perubahan
+
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Fungsi Kirim Ucapan & RSVP ke Tabel 'id'
+  window.submitRsvp = async function(event) {
+      event.preventDefault();
+      
+      const nameInput = document.getElementById('guestName').value;
+      const statusInput = document.getElementById('rsvpStatus').value;
+      const messageInput = document.getElementById('guestMessage').value;
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.innerText = "Mengirim...";
+      submitBtn.disabled = true;
+
+      const { data, error } = await _supabase
+          .from('id')
+          .insert([
+              { name: nameInput, status: statusInput, message: messageInput }
+          ]);
+
+      if (error) {
+          alert("Gagal mengirim ucapan: " + error.message);
+          submitBtn.innerText = "Kirim Ucapan";
+          submitBtn.disabled = false;
+      } else {
+          alert("Terima kasih! Ucapan & konfirmasi kehadiran berhasil disimpan.");
+          document.getElementById('rsvpForm').reset();
+          loadComments(); 
+          submitBtn.innerText = "Kirim Ucapan";
+          submitBtn.disabled = false;
+      }
+  };
+
+  // Fungsi Menampilkan Daftar Ucapan secara Permanen
+  async function loadComments() {
+      const commentContainer = document.getElementById('commentList');
+      if (!commentContainer) return;
+
+      const { data, error } = await _supabase
+          .from('id')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+      if (error) {
+          console.error("Gagal memuat ucapan:", error);
+          return;
+      }
+
+      commentContainer.innerHTML = '';
+      data.forEach(item => {
+          const badgeColor = item.status === 'Hadir' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+          const htmlItem = `
+              <div class="bg-white/80 p-4 rounded-2xl border-2 border-nailong-yellow mb-3 text-left shadow-sm">
+                  <div class="flex justify-between items-center mb-1">
+                      <span class="font-bold text-nailong-brown">${escapeHtml(item.name || '')}</span>
+                      <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${badgeColor}">${escapeHtml(item.status || '')}</span>
+                  </div>
+                  <p class="text-sm text-gray-700 leading-relaxed">${escapeHtml(item.message || '')}</p>
+                  <span class="text-[10px] text-gray-400 mt-2 block">${item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'}) : ''}</span>
+              </div>
+          `;
+          commentContainer.innerHTML += htmlItem;
+      });
+  }
+
+  function escapeHtml(str) {
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // Muat komentar otomatis saat halaman dibuka
+  document.addEventListener("DOMContentLoaded", loadComments);
+</script>
+</html>
